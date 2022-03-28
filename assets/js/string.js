@@ -61,3 +61,22 @@ let newOffice = Object.assign({}, codeQueenAddress)  // makes a detached copy
 // let altOffice = {...codeQueenAddress}
 
 // altOffice = {...altOffice, office: 'Nakawa', town: 'Nakawa'}
+
+
+const person = {
+    name: "Mercy",
+    contact: {
+        phone: "256099000000",
+        email: "janedoe@server.com",
+        ig: "instagram.com/mercy_245"
+    },
+    456: {
+        name: "Ultra"
+    }
+}
+
+// access data within nested object
+console.log(person.contact.ig) // dot notation
+console.log(person['contact']['ig'])
+
+// person[456].name;
