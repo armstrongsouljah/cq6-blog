@@ -7,6 +7,7 @@ for (counter, condition, expression) {
 
 // elevator going down
 // for loop
+
 for(let floor=3; floor>1; floor--) {
   console.log("Going down", floor,);
   if(floor ==1) {
