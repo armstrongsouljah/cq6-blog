@@ -15,18 +15,26 @@
     <button class="btn btn-waves" onclick="alert('Armstrong says Hi.')">Click me to say Hi()</button>
     <button id="second" class="btn btn-waves" onclick="alert('Armstrong says Hello.')">Click me to say Hello()</button>
 
-    <div class="row">
-        <form action="." method="post">
+    <div class="row card purple-text">
+        <form class="white" action="." method="post">
             <input type="email" name="email" placeholder="janedoe@mail.com" id="email">
             <input type="text" name="title" id="title" placeholder="How to roast chicken?">
             <textarea name="" id="content" cols="30" rows="10" name="content"></textarea>
             <input class="btn btn-waves" type="submit" value="Post">
+            <label>
+                <input type="checkbox"  id="remember" />
+                <span>Yellow</span>
+              </label>
         </form>
     </div>
+    <div id="feed" class="row  blue lighten-4">
+    </div>
+    
 
 </div>
  <!-- external js-->
 <script src="./assets/js/index.js"></script>
+<script src="./assets/js/oop.js"></script>
 <!--
 <script src="./assets/js/operators.js"></script> 
 <script src="./assets/js/string.js"></script> 
