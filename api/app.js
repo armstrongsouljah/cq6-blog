@@ -1,8 +1,11 @@
+require('dotenv').config()
+const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
 const postRoutes = require('./views/posts.route');
 
 const PORT = process.env.PORT || 4000
+const { MESSAGE, DATABASE_URL } = process.env
 
 // declare application instance
 const app = express();
@@ -21,10 +24,12 @@ app.get('/', (req, res) => {
 })
 
 // app.use('/blog/', postRoutes);
+mongoose.connect(DATABASE_URL, ()=> {
+  app.listen(PORT, (result)=> {
+    console.log(`${MESSAGE} at: http://localhost:${PORT}`)
+  })
+}).catch(error=> console.error(error))
 
-app.listen(PORT, ()=> {
-  console.log(`Server running at: http://localhost:${PORT}`)
-})
 
 /*
 

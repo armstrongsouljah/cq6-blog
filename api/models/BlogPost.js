@@ -1,5 +1,16 @@
 const posts = []; // fake database
+const mongoose = require('mongoose')
 
+const postSchema = new mongoose.Schema({
+    title: String,
+    author: String,
+    content: String,
+    dateCreated: {
+        type: String,
+        default: new Date().toISOString()
+    } 
+})
+/*
 class Post {
     constructor(title, author, content){
         this.title = title;
@@ -30,8 +41,10 @@ class Post {
        return posts.find(post => post.id === id);
     }
 }
+*/
+
+const Post = mongoose.model('post', postSchema)
 
 module.exports = {
-    Post,
-    posts
+    Post
 }
