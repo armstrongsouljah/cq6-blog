@@ -4,7 +4,10 @@ const addPost = (data) => {
     // let post  = new Post(...data);
     const {title, content, author} = data;
     let post  = new Post(title, author, content);
-    return Post.addPost(post);
+    // console.log("**** ", post);
+    return Post.addPost({
+     ...post
+    });
 }
 
 const fetchAll = () => Post.getPosts();

@@ -19,8 +19,11 @@ class Post {
     }
 
     static addPost(data) {
-        posts.push(data);
-        return posts;
+        if (data) {
+            posts.push(data);
+            return posts
+        }
+        return []
     }
 
     static getOne(id) {

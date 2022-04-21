@@ -16,7 +16,7 @@ app.use('/blog/', postRoutes);
 app.get('/', (req, res) => {
     res.status = 200;
     res.send({
-        message: "Welcome to my YouTube channel"
+        message: "Welcome to my Blog API"
     })
 })
 

@@ -14,7 +14,17 @@ router.post('/new', (req,res) => {
         content,
         author
     })
-    return res.status(201).json({posts: data })
+
+   if (data) {
+    return res.status(201).json({
+        message: "Post created successfully",
+        data
+       })
+   } 
+   else {
+       return res.status(400).json({message: "Could not create post"})
+   }
+    
 })
 
 router.get('/:id', (req, res) => {
