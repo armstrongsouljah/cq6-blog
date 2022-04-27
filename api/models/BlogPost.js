@@ -3,7 +3,11 @@ const mongoose = require('mongoose')
 
 const postSchema = new mongoose.Schema({
     title: String,
-    author: String,
+    author: {
+        type: String,
+        min: 10,
+        maxlength: 270
+    },
     content: String,
     dateCreated: {
         type: String,

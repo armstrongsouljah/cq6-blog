@@ -1,3 +1,4 @@
+const e = require('express');
 const {Post} = require('../models/BlogPost');
 
 const addPost = async (data) => {
@@ -27,9 +28,44 @@ const removeOne = async(id) => {
   // code goes here
 }
 
+const filterByAuthor = async authorName => {
+   return await Post.find({author: authorName})
+}
+
+const updatePost = async (id, postContent) => {
+  const {title, content} = postContent; 
+  let post = await Post.findById(id);
+   if (!post) {
+     return {}
+   } else {
+     
+     if(title) {
+       post.title = title
+     }
+     if(content) {
+       post.content = content;
+     }
+     return await post.save()
+   }
+}
+
+const removePost = async id => {
+  return await Post.findByIdAndDelete(id)
+}
+
+// const searchBlog = async searchKey => {
+//    return await Post.find({
+//      author: searchKey,
+//      title: {}
+//    })
+// }
+
 
 module.exports = {
     addPost,
     fetchAll,
-    fetchOne
+    fetchOne,
+    filterByAuthor,
+    updatePost,
+    removePost
 }

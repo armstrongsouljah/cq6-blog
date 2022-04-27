@@ -1,5 +1,6 @@
 require('dotenv').config()
 const mongoose = require('mongoose');
+// const {MongoClient} = require('mongodb');
 const express = require('express');
 const bodyParser = require('body-parser');
 const postRoutes = require('./views/posts.route');
@@ -39,3 +40,13 @@ V - View (Data access layer from the model)
 C - Controller - (middle man between model and view)
 
 */
+
+/* alternative */
+/*
+const client = new MongoClient(DATABASE_URL)
+client.connect()
+      .then((db)=> {
+        console.log('***', db)
+      })
+      .catch(err => console.error(err))
+      */

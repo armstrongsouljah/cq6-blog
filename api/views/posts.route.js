@@ -34,5 +34,32 @@ router.get('/:id',  async (req, res) => {
     return res.json({data: post})
 });
 
+router.get('/filter/:author', async (req, res) => {
+let {author} = req.params;
+let posts = await postController.filterByAuthor(author);
+    return res.json({
+        data: posts
+    })
+})
+
+router.put('/:id/update', async (req, res) => {
+    const {title,  content} = req.body
+    const {id} = req.params
+    const postContent = {title, content}
+    let data = await postController.updatePost(id, postContent)
+    if(!Object.keys(data).length){
+        return res.status(400).json({message: "Could not find post"})
+    }
+    return res.json({data})
+})
+
+router.delete("/:id/delete", async (req, res) => {
+    const {id} = req.params
+    await postController.removePost(id)
+    return res.status(202).json({
+        message: "Post successfully removed."
+    })
+})
+
 module.exports = router;
 
