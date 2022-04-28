@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
 const postRoutes = require('./views/posts.route');
+const { MongoClient } = require('mongodb');
+const cors = require('cors');
 
 const PORT = process.env.PORT || 4000
 const { MESSAGE, DATABASE_URL } = process.env
@@ -14,6 +16,7 @@ const app = express();
 // add middleware
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(cors())
 
 app.use('/blog/', postRoutes);
 
@@ -50,3 +53,36 @@ client.connect()
       })
       .catch(err => console.error(err))
       */
+
+function createDbConnection(db_url, successCallback, errCallBack) {
+  let conn = MongoClient.connect(db_url)
+                        .then(result => result)
+                        .catch(err => err)
+
+  if(conn.db) {
+    successCallback(conn)
+  }
+  if(conn.error) {
+    errCallBack(conn.error)
+  }
+}
+
+function successCallback(result) {
+  console.log('successfully connected as', result)
+}
+
+function errCallBack(error) {
+  console.error(error)
+}
+
+createDbConnection(DATABASE_URL, successCallback, errCallBack)
+
+async function createConn(db_url) {
+  return await MongoClient.connect(db_url)
+}
+
+createConn(DATABASE_URL)
+     .then(result => console.log('*****', result))
+     .catch(err => {
+       throw new Error(err)
+     })

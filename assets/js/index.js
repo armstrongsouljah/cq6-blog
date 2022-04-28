@@ -1,4 +1,9 @@
 // accessing elements on the page
+
+// const { response } = require("express");
+
+// const { removePost } = require("../../api/controllers/post.controller");
+
 //access using css class
 let buttons = document.getElementsByClassName('btn');
 console.log(buttons)
@@ -23,7 +28,7 @@ console.log('every btn', document.querySelectorAll(".btn"));
 let inputElem = document.querySelector("input[type='email']");
 
 // blogDatabase
-const posts = [];
+// let posts = [];
 
 // simple form processing
 const form = document.querySelector("form");
@@ -44,32 +49,47 @@ form.addEventListener('submit', (e) => {
         title: title.value,
         content: content.value
     }
-    createPostCard(blogBost);
+    // createPostCard(blogBost);
+    // submit to server instead
+    saveBlogPost(blogBost)
     form.reset();
 });
 const feed = document.querySelector('#feed');
 // let myFeed = document.getElementById('feed');
 function createPostCard(post) {
+
   let cardHolder = document.createElement('div');
   let cardContent = document.createElement('div');
   let postHeader = document.createElement('span');
   let postAuthor = document.createElement('p');
   let postContent = document.createElement('p')
+  let delBtn = document.createElement('button')
 
   // add data
   postHeader.textContent = post.title;
   postAuthor.textContent = post.author;
   postContent.textContent = post.content;
+  delBtn.textContent = 'Delete'
+  delBtn.setAttribute('id', post._id)
+
+  // add behavior
+  delBtn.addEventListener('click', e => {
+      e.preventDefault()
+      let id = e.target.id
+      removePost(id)
+  })
 
   // add styles
   postHeader.className ='card-title';
   cardHolder.className = 'card';
   cardContent.className = 'card-content';
+  delBtn.className = 'btn btn-waves red'
 
   // shape up the card
   cardContent.appendChild(postHeader);
   cardContent.appendChild(postAuthor);
   cardContent.appendChild(postContent);
+  cardContent.appendChild(delBtn)
   cardHolder.appendChild(cardContent);
 
 //   console.log('final card>>>', cardHolder);
@@ -96,3 +116,54 @@ checkBox.addEventListener('change', function(e){
     // console.log(e.target.checked);
 
 })
+
+const API_URL = 'http://localhost:8081/'
+
+fetch(API_URL)
+   .then(response => response.json())
+   .then(data => console.log(data))
+   .catch(err => console.error(err))
+
+
+function fetchBlogItems() {
+    return fetch(`${API_URL}blog/`)
+                 .then(response => response.json())
+                 .then(data => {
+                   if(data.posts.length) {
+                       data.posts.forEach(
+                           post => createPostCard(post))
+                   }
+                 })
+                 .catch(err => console.error(err))
+}
+fetchBlogItems()
+
+// creating post on the server
+function saveBlogPost(post) {
+    return fetch(`${API_URL}blog/new`, {
+        body: JSON.stringify(post),
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        window.location.reload() // refresh the page
+    })
+    .catch(err => console.error(err))
+}
+
+function removePost(id) {
+    // console.log('removing ', id)
+    return fetch(`${API_URL}blog/${id}/delete`, {
+        method: 'DELETE'
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        window.location.reload()
+    })
+    .catch(err => console.error(err))
+}
