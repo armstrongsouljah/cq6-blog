@@ -1,3 +1,5 @@
+// API Access frontend
+const BASE_URL = 'http://localhost:3000'
 // accessing elements on the page
 //access using css class
 let buttons = document.getElementsByClassName('btn');
@@ -44,7 +46,24 @@ form.addEventListener('submit', (e) => {
         title: title.value,
         content: content.value
     }
-    createPostCard(blogBost);
+    fetch(`${BASE_URL}/blog/new`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(blogBost)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data) {
+                const {content} = blogBost
+                blogBost.description = content
+                delete content
+                createPostCard(blogBost);
+            }
+        })
+        .catch(error => console.error(error))
+    // createPostCard(blogBost);
     form.reset();
 });
 const feed = document.querySelector('#feed');
@@ -59,12 +78,15 @@ function createPostCard(post) {
   // add data
   postHeader.textContent = post.title;
   postAuthor.textContent = post.author;
-  postContent.textContent = post.content;
+  postContent.textContent = post.description;
 
   // add styles
   postHeader.className ='card-title';
   cardHolder.className = 'card';
   cardContent.className = 'card-content';
+
+  // set id
+  cardHolder.setAttribute('id', post._id)
 
   // shape up the card
   cardContent.appendChild(postHeader);
@@ -96,3 +118,12 @@ checkBox.addEventListener('change', function(e){
     // console.log(e.target.checked);
 
 })
+
+
+fetch(`${BASE_URL}/blog/`)
+  .then(response => response.json())
+  .then(data => {
+      data.posts.forEach(post => {
+          createPostCard(post)
+      })
+  });
